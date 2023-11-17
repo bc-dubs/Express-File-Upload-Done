@@ -125,9 +125,12 @@ const retrieveFile = async (req, res) => {
   try {
     // First we attempt to find the file by the _id sent by the user.
     doc = await File.findOne({ _id: req.query._id }).exec();
+    // Alternate, more efficient format
+    // doc = await File.findById(req.query._id).exec();
   } catch (err) {
     // If we have an error contacting the database, let the user know something happened.
     console.log(err);
+    // Not a 404 because not finding a file wouldn't throw an error
     return res.status(400).json({ error: 'Something went wrong retrieving file!' });
   }
 
@@ -148,6 +151,7 @@ const retrieveFile = async (req, res) => {
   */
   res.set({
     // Content-Type tells the browser what type of file it is (png, mp3, zip, etc)
+    // If we don't set the headers, the file may display with no type in the user's file system
     'Content-Type': doc.mimetype,
 
     // Content-Length tells it how many bytes long it is.
@@ -167,6 +171,7 @@ const retrieveFile = async (req, res) => {
        to a page that just shows the image. However, if we tell it the file should
        be treated as an attachment it will download the file and not redirect the user.
     */
+    // The "attachment" code will cause the file to be downloaded to the user's computer rather than display in the browser
     'Content-Disposition': `filename="${doc.name}"`, /* `attachment; filename="${doc.name}"` */
   });
 

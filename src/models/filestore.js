@@ -41,9 +41,12 @@ const FileSchema = new mongoose.Schema({
   mimetype: {
     type: String,
   },
+  md5: {
+    type: String,
+  },
 });
 
 // Finally we construct a model based on our schema above.
 const FileModel = mongoose.model('FileModel', FileSchema);
 
-module.exports = FileModel;
+module.exports = FileModel; // Could compress to 1 line

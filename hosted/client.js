@@ -18,6 +18,7 @@ const uploadFile = async (e) => {
 
     const response = await fetch('/upload',{
         method: 'POST',
+        // Built-in function that will serialize data from a given HTML form object
         body: new FormData(e.target),
     });
 
